@@ -1,10 +1,11 @@
 [build]
   base    = "frontend"      # run all build commands from the frontend/ folder
-  command = "npm run build"
+  command = "npm install --include=dev && npx vite build"
   publish = "dist"          # Vite outputs to frontend/dist
 
 [build.environment]
   NODE_VERSION = "20"
+  NPM_FLAGS    = "--production=false"   # force devDependencies to install
 
 # SPA fallback — send every unknown path to index.html so React Router works
 [[redirects]]
