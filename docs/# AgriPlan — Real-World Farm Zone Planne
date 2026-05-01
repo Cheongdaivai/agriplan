@@ -1,0 +1,58 @@
+# AgriPlan — Real-World Farm Zone Planner
+
+Full-stack farm planning app using real GPS coordinates, Leaflet maps, and Turf.js area math.
+
+## Stack
+- **Frontend**: React + Vite + Leaflet.js + Leaflet.draw + Turf.js + Tailwind
+- **Backend**: Node.js + Express + MongoDB (GeoJSON native)
+- **Auth**: JWT
+
+## Project Structure
+```
+agriplan/
+├── frontend/     # React app
+└── backend/      # Express API
+```
+
+## Quick Start
+
+### 1. Backend
+```bash
+cd backend
+npm install
+cp .env.example .env      # fill in MONGO_URI and JWT_SECRET
+npm run dev
+```
+
+### 2. Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173
+
+## Environment Variables
+
+### backend/.env
+```
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/agriplan
+JWT_SECRET=your_secret_key_here
+NODE_ENV=development
+```
+
+## How It Works
+
+1. **Draw farm boundary** on a real OpenStreetMap satellite view
+2. **Draw zones** inside the farm — each zone is a real GeoJSON polygon
+3. **Turf.js** calculates exact area in hectares from lat/lng coordinates
+4. **Assign crops** to zones — yield/revenue/water based on real area
+5. **Save** to MongoDB using GeoJSON format (geo-indexed, scalable)
+
+## Scaling Path
+- Phase 2: Add IoT sensor binding per zone
+- Phase 3: GPS auto-locate on mobile
+- Phase 4: Drone/satellite imagery overlay
+- Phase 5: AI crop recommendations per zone soil type
