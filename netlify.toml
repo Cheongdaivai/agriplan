@@ -1,6 +1,6 @@
 [build]
   base    = "frontend"      # run all build commands from the frontend/ folder
-  command = "npm install --include=dev && npx vite build"
+  command = "npm install --include=dev && node ./node_modules/vite/bin/vite.js build"
   publish = "dist"          # Vite outputs to frontend/dist
 
 [build.environment]
