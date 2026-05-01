@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const BASE = "/api";
+// In production (Netlify) set VITE_API_URL to your deployed backend URL,
+// e.g. https://my-agriplan-api.onrender.com/api
+// In local dev the Vite proxy rewrites /api → http://localhost:5000 so the
+// fallback "/api" keeps working without any changes.
+const BASE = import.meta.env.VITE_API_URL ?? "/api";
 
 // Shared axios instance with sensible defaults
 const http = axios.create({
