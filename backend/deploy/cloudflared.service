@@ -1,0 +1,15 @@
+[Unit]
+Description=Cloudflare Tunnel - AgriPlan API
+After=network.target
+
+[Service]
+Type=simple
+User=zhampt
+# Token stored in chmod 600 file — never hardcode in this unit file
+EnvironmentFile=/home/zhampt/.cloudflared/agriplan-tunnel.env
+ExecStart=/usr/bin/cloudflared tunnel run --token ${TUNNEL_TOKEN}
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

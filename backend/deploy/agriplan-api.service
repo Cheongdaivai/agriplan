@@ -1,0 +1,40 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# systemd unit — AgriPlan Node.js backend
+#
+# Install:
+#   sudo cp agriplan-api.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now agriplan-api
+#
+# Replace <YOUR-LINUX-USER> and <ABSOLUTE-PATH-TO-BACKEND> before copying.
+# Example path: /home/ubuntu/agriplan/backend
+# ─────────────────────────────────────────────────────────────────────────────
+
+[Unit]
+Description=AgriPlan API — Node.js Express backend
+Documentation=https://github.com/your-org/agriplan
+After=network.target mongod.service
+Wants=mongod.service
+
+[Service]
+Type=simple
+User=<YOUR-LINUX-USER>
+WorkingDirectory=<ABSOLUTE-PATH-TO-BACKEND>
+
+# Load all environment variables from the .env file
+EnvironmentFile=<ABSOLUTE-PATH-TO-BACKEND>/.env
+
+# Use the node binary found in the user's PATH (adjust if using nvm/volta)
+ExecStart=/usr/bin/node server.js
+
+# Restart automatically on crash; wait 5 s before retrying
+Restart=on-failure
+RestartSec=5
+
+# Send stdout/stderr to journald (view with: journalctl -u agriplan-api -f)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=agriplan-api
+
+[Install]
+WantedBy=multi-user.target

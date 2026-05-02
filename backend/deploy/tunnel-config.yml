@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Cloudflare Zero Trust — Tunnel configuration for AgriPlan API
+#
+# Only one placeholder remains:
+#   <TUNNEL-ID>  — UUID printed after:  cloudflared tunnel create agriplan-api
+#                  Example: a1b2c3d4-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+# ─────────────────────────────────────────────────────────────────────────────
+
+tunnel: <TUNNEL-ID>
+credentials-file: /home/zhampt/.cloudflared/<TUNNEL-ID>.json
+
+ingress:
+  # AgriPlan backend — Docker container exposes port 4500 on the host
+  - hostname: agriplan.aic-cc.space
+    service: http://localhost:4500
+    originRequest:
+      connectTimeout: 30s
+      noTLSVerify: false
+
+  # Catch-all required by cloudflared — returns 404 for everything else
+  - service: http_status:404

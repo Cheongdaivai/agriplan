@@ -1,0 +1,36 @@
+services:
+
+  mongo:
+    image: mongo:7
+    container_name: agriplan-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - agriplan-net
+    # Not exposed on host — only reachable inside Docker network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agriplan-api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Override MONGO_URI so the app reaches the mongo service by its Docker name
+      MONGO_URI: mongodb://mongo:27017/agriplan
+    ports:
+      # Host:Container — cloudflared tunnel connects to localhost:4500
+      - "4500:4500"
+    depends_on:
+      - mongo
+    networks:
+      - agriplan-net
+
+volumes:
+  mongo_data:
+
+networks:
+  agriplan-net:
+    driver: bridge
