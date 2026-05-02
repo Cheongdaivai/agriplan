@@ -71,7 +71,11 @@ export default function SaveFarmModal({ onClose }) {
             farmId,
             name: zone.name,
             coordinates: zone.coordinates,
-            cropId: zone.cropId ?? undefined,
+            // Only send cropId when it is a real MongoDB ObjectId.
+            // Fallback crop ids (e.g. "crop-001") are not persisted.
+            cropId: zone.cropId && /^[a-f\d]{24}$/i.test(zone.cropId)
+              ? zone.cropId
+              : null,
             area: calculateAreaSqm(zone.coordinates),
             color: zone.color,
           }),

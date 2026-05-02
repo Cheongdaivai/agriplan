@@ -84,13 +84,11 @@ const zoneValidationRules = [
 
   body("cropId")
     .optional({ nullable: true })
-    .custom((value) => {
-      if (value !== null && value !== undefined && value !== "") {
-        if (!mongoose.Types.ObjectId.isValid(value)) {
-          throw new Error("cropId must be a valid MongoDB ObjectId or null");
-        }
-      }
-      return true;
+    .customSanitizer((value) => {
+      // Silently coerce non-ObjectId values (e.g. fallback crop ids like
+      // "crop-001") to null so the zone is saved without a crop reference.
+      if (value === undefined || value === "" || value === null) return null;
+      return mongoose.Types.ObjectId.isValid(value) ? value : null;
     }),
 
   body("coordinates")
